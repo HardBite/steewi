@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="card text-center">
+      <div class="card-block">
+          <h3 class="card-title">{{object.name}}</h3>
+          <p>{{ object.description }}</p>
+          <div class="card-footer ">
+            {{ object.price }}$
+          </div>
+      </div>
+    </div>
+    </div>
+
+{% endblock %}
