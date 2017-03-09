@@ -1,6 +1,7 @@
 from django.db import models
+from vote.models import VoteModel
 
-class Product(models.Model):
+class Product(VoteModel, models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=50, unique=True)
     description = models.TextField()

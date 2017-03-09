@@ -1,3 +1,15 @@
+$('#like_link').click(function(event){
+    event.preventDefault();
+    console.log("clicked!")
+    var url;
+    url = $(this).attr("href");
+    $.get(url, function(data){
+                $('#likes_score').html("<strong>" +  (parseInt($('#likes_score').html(), 10)+1).toString() + "</strong> (you liked)");
+               $('#like_link').hide();
+    });
+});
+
+
 /* Project specific Javascript goes here. */
 
 /*

@@ -6,6 +6,16 @@
         <div class="card text-center">
       <div class="card-block">
           <h3 class="card-title">{{object.name}}</h3>
+          {% if user.is_authenticated %}
+            {% if current_user_voted %}
+                <p> <strong> {{ object.vote_score }} </strong> (you liked) </p>
+            {% else %}
+                <p> <span id="likes_score">{{ object.vote_score }} </span> <a id="like_link" href="{%  url 'like' user.id object.id %} "> Like this! </a></p>
+            {% endif %}
+          {% else %}
+            <p> {{ object.vote_score }} </p>
+          {% endif %}
+
           <p>{{ object.description }}</p>
           <div class="card-footer ">
             {{ object.price }}$
