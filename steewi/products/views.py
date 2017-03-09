@@ -35,5 +35,4 @@ class ProductDetail(DetailView):
 def like(request, user_id, product_id):
     product = Product.objects.get(pk=product_id)
     product.votes.up(user_id)
-    print(product_id, user_id)
     return JsonResponse({'result': 'ok'})

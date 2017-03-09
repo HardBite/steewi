@@ -4,10 +4,23 @@ $('#like_link').click(function(event){
     var url;
     url = $(this).attr("href");
     $.get(url, function(data){
+        if (data['result'] == 'ok') {
                 $('#likes_score').html("<strong>" +  (parseInt($('#likes_score').html(), 10)+1).toString() + "</strong> (you liked)");
                $('#like_link').hide();
+                showMessage('success', 'Thank You!')}
+        else{
+            showMessage('danger', 'Sorry, something went wrong')
+        }
     });
 });
+
+function showMessage(level, msg){
+    $('#content-container').prepend(('<div class="alert alert-'+level+' alert-dismissible"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>' + msg +'</div>'));
+    $(".alert").delay(1000).fadeOut(500)
+
+};
+
+
 
 
 /* Project specific Javascript goes here. */
