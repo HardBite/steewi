@@ -59,6 +59,7 @@ LOCAL_APPS = [
     # custom users app
     'steewi.users.apps.UsersConfig',
     # Your stuff: custom apps go here
+    'steewi.products',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
