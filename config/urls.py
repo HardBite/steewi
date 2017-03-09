@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^users/', include('steewi.users.urls', namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^products/', include('steewi.products.urls')),
+    url(r'^comments/', include('django_comments.urls')),
 
     # Your stuff: custom urls includes go here
 

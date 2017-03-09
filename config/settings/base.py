@@ -61,6 +61,7 @@ LOCAL_APPS = [
     # Your stuff: custom apps go here
     'steewi.products',
     'vote',
+    'django_comments',
 ]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
