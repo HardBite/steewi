@@ -8,6 +8,7 @@ from .models import Product
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'modified_at')
+    exclude = ('vote_score', 'num_vote_up', 'num_vote_down' )
     prepopulated_fields = {"slug": ("name",)}
 
     view_on_site = True
