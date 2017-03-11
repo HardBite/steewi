@@ -15,7 +15,7 @@ class ProductList(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductList, self).get_context_data(**kwargs)
         context['order_by'] = self.request.GET.get('order_by', 'name')
-        context['ordering_options'] = ('name', 'vote_score')
+        context['ordering_options'] = {'name': "Name", 'vote_score': "Likes"}
         # Todo make human readable ordering_options
         return context
 

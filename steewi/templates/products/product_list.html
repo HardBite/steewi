@@ -9,11 +9,11 @@
         <form class="form-inline" method="get" action="{% url 'list' %}">
             <label class="mr-sm-2" for="inlineFormSelect"> Sort By </label>
               <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormSelect" name="order_by">
-                  {% for option in ordering_options %}
+                  {% for option, human_name in ordering_options.items %}
                       {% if option == order_by %}
-                        <option selected>{{ order_by }}</option>
+                        <option selected>{{ human_name}}</option>
                       {% else %}
-                        <option value="{{ option }}">{{option}}</option>
+                        <option value="{{ option }}">{{human_name}}</option>
                       {% endif %}
                   {% endfor %}
               </select>
