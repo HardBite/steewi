@@ -1,6 +1,9 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
-from .models import Product, ProductCommentForm
+from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from .models import Product, ProductComment
 from django.http import JsonResponse
 
 class ProductList(ListView):
@@ -16,7 +19,6 @@ class ProductList(ListView):
         context = super(ProductList, self).get_context_data(**kwargs)
         context['order_by'] = self.request.GET.get('order_by', 'name')
         context['ordering_options'] = {'name': "Name", 'vote_score': "Likes"}
-        # Todo make human readable ordering_options
         return context
 
 class ProductDetail(DetailView):
@@ -26,14 +28,14 @@ class ProductDetail(DetailView):
         context = super(ProductDetail, self).get_context_data(**kwargs)
         product = self.get_object()
         user = self.request.user
-        form = ProductCommentForm()
+        comment_form = ProductCommentForm()
         if user.id is not None:
             context['current_user_voted'] = product.votes.exists(user.id)
-            form.fields['author_name'].widget.attrs['value'] = user.username
-            form.fields['author_name'].widget.attrs['readonly'] = True
+            comment_form.fields['author_name'].widget.attrs['value'] = user.username
+            comment_form.fields['author_name'].widget.attrs['readonly'] = True
         else:
             context['current_user_voted'] = False
-        context['form'] = form
+        context['comment_form'] = comment_form
         return context
 
     def post(self, request, **kwargs):
@@ -47,7 +49,16 @@ class ProductDetail(DetailView):
         comment.save()
         return redirect('/products/{}'.format(product.slug))
 
+class ProductCommentForm(forms.ModelForm):
+    class Meta:
+        model = ProductComment
+        fields = ['author_name', 'text']
 
+    def __init__(self, *args, **kwargs):
+        super(ProductCommentForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.fields['text'].widget.attrs['rows'] = 3
+        self.helper.add_input(Submit('submit', 'Submit'))
 
 
 def like(request, user_id, product_id):
