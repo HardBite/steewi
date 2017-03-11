@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 
+{% block css %}
+    {{ block.super }}
+    {% load staticfiles %}
+    <link href="{% static 'css/product_detail_scrolls.css' %}" rel="stylesheet">
+
+{% endblock %}
+
 {% block content %}
 
     <div class="row">
+    <div class="col-md-7" id="left">
         <div class="card text-center">
       <div class="card-block">
           <h3 class="card-title">{{object.name}}</h3>
@@ -24,4 +32,36 @@
     </div>
     </div>
 
+
+    <div class="col-md-5" id="right">
+
+    <p>
+    <button class="btn btn-danger" data-toggle="collapse" data-target="#commentForm">Leave comment</button>
+    </p>
+    <div id="commentForm" class="collapse">
+
+    {% load crispy_forms_tags %}
+        {% crispy form %}
+    </div>
+
+
+
+
+        {% with object.get_recent_comments_list as comments  %}
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card">
+                  <div class="card-block">
+                    <h4 class="card-title">{{ comment.author_name }}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted"> {{ comment.created_at }}</h6>
+                    <p class="card-text">{{ comment.text }}</p>
+                  </div>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    </div>
+</div>
 {% endblock %}
