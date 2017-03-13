@@ -31,6 +31,9 @@ function showMessage(level, msg){
     $(".alert").delay(3000).fadeOut(500)
 }
 
+$(document).ready(function(){
+    $(".alert").delay(3000).fadeOut(500)
+})
 /*
 Formatting hack to get around crispy-forms unfortunate hardcoding
 in helpers.FormHelper:

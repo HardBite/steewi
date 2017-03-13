@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
+from django.contrib import messages
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -43,8 +44,6 @@ class ProductDetail(DetailView):
 
         context['current_user_voted'] = user_voted
         context['comment_form'] = comment_form
-        print('yello')
-        print(vote_form)
         return context
 
     def post(self, request, **kwargs):
@@ -56,6 +55,7 @@ class ProductDetail(DetailView):
             comment.author = user
         comment.product = product
         comment.save()
+        messages.add_message(request, messages.SUCCESS, 'Thank you for your input!')
         return redirect('/products/{}'.format(product.slug))
 
 class ProductCommentForm(forms.ModelForm):
@@ -67,6 +67,7 @@ class ProductCommentForm(forms.ModelForm):
         super(ProductCommentForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.fields['text'].widget.attrs['rows'] = 3
+        self.helper.add_input(Submit('submit', 'Comment'))
 
 
 class VoteForm(forms.Form):
