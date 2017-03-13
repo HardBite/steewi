@@ -17,7 +17,7 @@ class Product(VoteModel, models.Model):
 
     def get_recent_comments_list(self):
         last_day_begins = datetime.datetime.now() - datetime.timedelta(days=1)
-        return self.productcomment_set.filter(created_at__gte=last_day_begins).all()
+        return self.productcomment_set.filter(created_at__gte=last_day_begins).order_by('-created_at').all()
 
 
 class ProductComment(models.Model):
