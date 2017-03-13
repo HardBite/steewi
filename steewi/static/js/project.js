@@ -1,29 +1,35 @@
-$('#like_link').click(function(event){
+$('#voteForm').on('submit', (function(event){
     event.preventDefault();
-    console.log("clicked!")
-    var url;
-    url = $(this).attr("href");
-    $.get(url, function(data){
-        if (data['result'] == 'ok') {
-                $('#likes_score').html("<strong>" +  (parseInt($('#likes_score').html(), 10)+1).toString() + "</strong> (you liked)");
-               $('#like_link').hide();
+    like(this);
+ }));
+
+function like(form) {
+    url = $(form).attr('action');
+    formData = $(form).serializeArray();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+
+        success: function(jsonResp) {
+            if (jsonResp['result'] == 'ok') {
+                likeScore = $('#likeScore')
+                current_score = parseInt(likeScore.html(), 10);
+                likeScore.html("<strong>" + (current_score+1) + "</strong> (you liked)");
+                $(form).hide();
                 showMessage('success', 'Thank You!')}
-        else{
-            showMessage('danger', 'Sorry, something went wrong')
+            else{showMessage('danger', 'Sorry, something went wrong')}
+        },
+        error: function(xhr,errmsg,err) {
+            showMessage('danger', ("Your vote hasn't been submitted due to " + xhr.status +" "+ xhr.statusText))
         }
     });
-});
+    }
 
 function showMessage(level, msg){
     $('#content-container').prepend(('<div class="alert alert-'+level+' alert-dismissible"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>' + msg +'</div>'));
-    $(".alert").delay(1000).fadeOut(500)
-
-};
-
-
-
-
-/* Project specific Javascript goes here. */
+    $(".alert").delay(3000).fadeOut(500)
+}
 
 /*
 Formatting hack to get around crispy-forms unfortunate hardcoding

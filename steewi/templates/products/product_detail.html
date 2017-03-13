@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+
 
 {% block css %}
     {{ block.super }}
-    {% load staticfiles %}
     <link href="{% static 'css/product_detail_scrolls.css' %}" rel="stylesheet">
 
 {% endblock %}
@@ -16,12 +19,17 @@
           <h3 class="card-title">{{object.name}}</h3>
           {% if user.is_authenticated %}
             {% if current_user_voted %}
-                <p> <strong> {{ object.vote_score }} </strong> (you liked) </p>
+                <p> <strong> &#x2661; {{ object.vote_score }} </strong> (you liked) </p>
             {% else %}
-                <p> <span id="likes_score">{{ object.vote_score }} </span> <a id="like_link" href="{%  url 'like' user.id object.id %} "> Like this! </a></p>
+                {% if vote_form %}
+                    <div id="vote">
+                    {% crispy vote_form %}
+                    </div>
+                {% endif %}
+                <p> &#x2661; <span id="likeScore"> {{ object.vote_score }} </span> </p>
             {% endif %}
           {% else %}
-            <p> {{ object.vote_score }} </p>
+            <p> &#x2661;  {{ object.vote_score }} </p>
           {% endif %}
 
           <p>{{ object.description }}</p>
@@ -34,6 +42,8 @@
 
 
     <div class="col-md-5" id="right">
+
+
 
     <p>
     <button class="btn btn-danger" data-toggle="collapse" data-target="#commentForm">Leave comment</button>

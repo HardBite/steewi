@@ -29,13 +29,22 @@ class ProductDetail(DetailView):
         product = self.get_object()
         user = self.request.user
         comment_form = ProductCommentForm()
+        vote_form = VoteForm()
+        vote_form.helper.form_action = '/products/like/{}/{}/'.format(user.id, product.id)
         if user.id is not None:
-            context['current_user_voted'] = product.votes.exists(user.id)
+            user_voted = product.votes.exists(user.id)
+            if not user_voted:
+                context['vote_form'] = vote_form
+
             comment_form.fields['author_name'].widget.attrs['value'] = user.username
             comment_form.fields['author_name'].widget.attrs['readonly'] = True
         else:
-            context['current_user_voted'] = False
+            user_voted = False
+
+        context['current_user_voted'] = user_voted
         context['comment_form'] = comment_form
+        print('yello')
+        print(vote_form)
         return context
 
     def post(self, request, **kwargs):
@@ -58,10 +67,25 @@ class ProductCommentForm(forms.ModelForm):
         super(ProductCommentForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.fields['text'].widget.attrs['rows'] = 3
-        self.helper.add_input(Submit('submit', 'Submit'))
+
+
+class VoteForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(VoteForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_id = 'voteForm'
+        self.helper.add_input(Submit('submit', 'like it!'))
+
 
 
 def like(request, user_id, product_id):
-    product = Product.objects.get(pk=product_id)
-    product.votes.up(user_id)
-    return JsonResponse({'result': 'ok'})
+    if request.method == 'POST':
+        vote_form = VoteForm(request.POST)
+        if vote_form.is_valid:
+            product = Product.objects.get(pk=product_id)
+            product.votes.up(user_id)
+            return JsonResponse({'result': 'ok'})
+        else:
+            return JsonResponse({'result': 'error'})
+
