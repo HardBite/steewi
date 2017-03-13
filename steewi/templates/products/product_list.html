@@ -5,11 +5,11 @@
     <div class="col-md-10">
     <h2>Products</h2>
     </div>
-    <div class="col-md-4 offset-md-8">
+    <div class="col-md-5 offset-md-7">
         <form class="form-inline" method="get" action="{% url 'list' %}">
-            <label class="mr-sm-2" for="inlineFormSelect"> Sort By </label>
-              <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormSelect" name="order_by">
-                  {% for option, human_name in ordering_options.items %}
+            <label for="inlineFormSelect"> Sort By </label>
+              <select class="custom-select " id="inlineFormSelect" name="order_by">
+                  {% for option, human_name in ordering_options %}
                       {% if option == order_by %}
                         <option selected>{{ human_name}}</option>
                       {% else %}

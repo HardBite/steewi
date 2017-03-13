@@ -19,7 +19,7 @@ class ProductList(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductList, self).get_context_data(**kwargs)
         context['order_by'] = self.request.GET.get('order_by', 'name')
-        context['ordering_options'] = {'name': "Name", 'vote_score': "Likes"}
+        context['ordering_options'] = [('name', "Name A..Z"), ('-name', "Name Z...A"), ('vote_score', "Likes 0..9"), ('-vote_score', "Likes 9..0")]
         return context
 
 class ProductDetail(DetailView):
