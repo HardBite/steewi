@@ -45,3 +45,5 @@ pytz==2016.10
 
 
 # Your custom requirements go here
+# Voting
+django-vote
